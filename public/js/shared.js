@@ -58,19 +58,19 @@ function renderAuthLinks(user) {
 
   if (user) {
     desktopLinks.innerHTML =
-      '<a href="new-project.html" class="btn btn-primary btn-sm">+ New Project</a><a href="my-projects.html" class="text-sm">My Projects</a><a href="profile.html" class="text-sm">Profile</a><button onclick="signOut()" class="btn btn-ghost btn-sm">Sign Out</button>';
+      '<a href="/public/pages/new-project.html" class="btn btn-primary btn-sm">+ New Project</a><a href="/public/pages/my-projects.html" class="text-sm">My Projects</a><a href="/public/pages/profile.html" class="text-sm">Profile</a><button onclick="signOut()" class="btn btn-ghost btn-sm">Sign Out</button>';
 
     if (mobileLinks) {
       mobileLinks.innerHTML =
-        '<a href="new-project.html">New Project</a><a href="my-projects.html">My Projects</a><a href="profile.html">Profile</a><button onclick="signOut()">Sign Out</button>';
+        '<a href="/public/pages/new-project.html">New Project</a><a href="/public/pages/my-projects.html">My Projects</a><a href="/public/pages/profile.html">Profile</a><button onclick="signOut()">Sign Out</button>';
     }
     return;
   }
 
   desktopLinks.innerHTML =
-    '<a href="login.html" class="btn btn-primary btn-sm">Sign In</a>';
+    '<a href="/public/pages/login.html" class="btn btn-primary btn-sm">Sign In</a>';
   if (mobileLinks) {
-    mobileLinks.innerHTML = '<a href="login.html">Sign In</a>';
+    mobileLinks.innerHTML = '<a href="/public/pages/login.html">Sign In</a>';
   }
 }
 
