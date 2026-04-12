@@ -1,19 +1,53 @@
-# Environment files
-.env
-.env.local
-.env.*.local
-public/js/config.js
+# ------------------------------
+# Dependencies and package caches
+# ------------------------------
+node_modules/
+.npm/
+.pnpm-store/
 
-# OS files
+# ------------------------------
+# Build and test outputs
+# ------------------------------
+dist/
+build/
+coverage/
+.nyc_output/
+*.lcov
+
+# ------------------------------
+# Runtime logs and temp files
+# ------------------------------
+*.log
+logs/
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# ------------------------------
+# Environment and local secrets
+# ------------------------------
+.env
+.env.*
+!.env.example
+
+# Frontend pseudo-env runtime config files
+public/config/app-config.js
+public/config/app-config.local.js
+public/config/*.local.js
+
+# ------------------------------
+# Editor and OS files
+# ------------------------------
+.vscode/
+.idea/
+*.code-workspace
 .DS_Store
 Thumbs.db
 
-# Logs
-*.log
-
-# Build / cache folders (if you ever add tooling later)
-dist/
-build/
-node_modules/
-
-
+# ------------------------------
+# Misc tooling folders
+# ------------------------------
+.cache/
+.tmp/
+out/
