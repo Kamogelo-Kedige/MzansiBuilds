@@ -109,7 +109,7 @@ async function signOut() {
   }
 
   await window.supabaseClient.auth.signOut();
-  window.location.href = "index.html";
+  window.location.href = "/index.html";
 }
 
 //Helper for pages that require login.
