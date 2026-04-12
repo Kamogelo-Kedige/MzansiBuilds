@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/public/css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://kit.fontawesome.com/1626dc2da5.js" crossorigin="anonymous"></script>
+
+  <title>New Project — MzansiBuilds</title>
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <a href="../../index.html" class="navbar-brand">
+        MzansiBuilds
+      </a>
+      <div class="nav-links">
+        <a href="feed.html">Feed</a>
+        <a href="celebration-wall.html"> Celebration Wall</a>
+        <span id="auth-links"></span>
+      </div>
+      <button class="mobile-toggle" onclick="toggleMobileMenu()">☰</button>
+    </div>
+    <div id="mobile-menu" class="mobile-menu">
+      <a href="feed.html">Feed</a>
+      <a href="celebration-wall.html">Celebration Wall</a>
+      <span id="auth-links-mobile"></span>
+    </div>
+  </nav>
+
+  <div class="container py-8" style="max-width:640px">
+    <h1 class="mb-2">Create a New Project</h1>
+    <p class="text-muted mb-8">Share what you're building with the community</p>
+    <div class="card" style="padding:1.5rem">
+      <form id="project-form">
+        <div class="form-group">
+          <label for="title">Project Title *</label>
+          <input type="text" id="title" class="form-input" placeholder="My Awesome Project" required>
+        </div>
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea id="description" class="form-textarea" placeholder="What are you building?"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="stage">Stage</label>
+          <select id="stage" class="form-select">
+            <option value="idea"> <i class="fa-solid fa-check"></i>Idea </option>
+            <option value="planning">Planning <i class="fa-solid fa-lightbulb"></i></option>
+            <option value="building">Building <i class="fa-solid fa-spinner"></i></option>
+            <option value="testing">Testing <i class="fa-solid fa-spinner"></i></option>
+            <option value="completed"> <i class="fa-solid fa-check"></i>Completed </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="tech_stack">Tech Stack (comma-separated)</label>
+          <input type="text" id="tech_stack" class="form-input" placeholder="React, Node.js, PostgreSQL">
+        </div>
+        <div class="form-group">
+          <label for="support_needed">Support Needed</label>
+          <input type="text" id="support_needed" class="form-input" placeholder="e.g. Frontend dev, UI design">
+        </div>
+        <div class="form-group">
+          <label for="repo_url">Repo URL</label>
+          <input type="url" id="repo_url" class="form-input" placeholder="https://github.com/...">
+        </div>
+        <div class="form-group">
+          <label for="live_url">Live URL</label>
+          <input type="url" id="live_url" class="form-input" placeholder="https://...">
+        </div>
+        <button type="submit" class="btn btn-primary w-full" id="submit-btn">Create Project</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/supabaseClient.js"></script>
+  <script src="../js/shared.js"></script>
+  <script src="../js/projects.js"></script>
+</body>
+
+</html>
