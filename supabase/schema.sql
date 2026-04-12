@@ -44,6 +44,7 @@ CREATE TABLE public.projects (
   title text NOT NULL,
   description text,
   support_required text,
+  tech_stack text,
   stage text NOT NULL CHECK (stage = ANY (ARRAY['idea'::text, 'planning'::text, 'building'::text, 'testing'::text, 'completed'::text])),
   is_complete boolean NOT NULL DEFAULT false,
   created_at timestamp with time zone NOT NULL DEFAULT now(),
