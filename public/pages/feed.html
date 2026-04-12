@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://kit.fontawesome.com/1626dc2da5.js" crossorigin="anonymous"></script>
+
+    <title>Live Feed — MzansiBuilds</title>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="../../index.html" class="navbar-brand">
+                MzansiBuilds
+            </a>
+            <div class="nav-links">
+                <a href="../../index.html">Home</a>
+                <a href="celebration-wall.html">Celebration Wall</a>
+                <span id="auth-links"></span>
+            </div>
+            <button class="mobile-toggle" onclick="toggleMobileMenu()">☰</button>
+        </div>
+        <div id="mobile-menu" class="mobile-menu">
+            <a href="../../index.html">Home</a>
+            <a href="celebration-wall.html">Celebration Wall</a>
+            <span id="auth-links-mobile"></span>
+        </div>
+    </nav>
+
+    <div class="container py-8">
+        <h1>Live Feed <i class="fa-solid fa-binoculars"></i></h1>
+        <p class="text-muted mb-8">Take a peek into what other developers are building right now</p>
+        <div id="feed-grid" class="grid-3">
+            <div class="py-20 text-center" style="grid-column:1/-1">
+                <div class="spinner"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../config/app-config.js"></script>
+    <script src="../js/supabaseClient.js"></script>
+    <script src="../js/shared.js"></script>
+
+
+</body>
+
+</html>
