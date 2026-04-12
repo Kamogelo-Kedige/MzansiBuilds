@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://kit.fontawesome.com/1626dc2da5.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="styles.css">
+  <title>MzansiBuilds</title>
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="navbar-brand">
+        MzansiBuilds
+      </a>
+      <div class="nav-links">
+        <a href="signup.html">Sign Up</a>
+        <a href="login.html">Log In</a>
+        <a href="feed.html">Live Feed</a>
+        <a href="celebration-wall.html">Celebration Wall</a>
+        <span id="auth-links"></span>
+      </div>
+      <button class="mobile-toggle" onclick="toggleMobileMenu()">☰</button>
+    </div>
+    <div id="mobile-menu" class="mobile-menu">
+      <a href="signup.html">Sign Up</a>
+      <a href="login.html">Log In</a>
+      <a href="feed.html">Live Feed</a>
+      <a href="celebration-wall.html">Celebration Wall</a>
+      <span id="auth-links-mobile"></span>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="container">
+      <h1>Build in Public.<br>Grow Together.</h1>
+      <p>MzansiBuilds is a platform that helps developers to build publicly and keep up with what other developers are
+        building.</p>
+      <div class="flex gap-3 mt-4" style="flex-wrap:wrap">
+        <a href="feed.html" class="btn btn-primary">View live Feed</a>
+        <a href="celebration-wall.html" class="btn btn-outline"> Celebration Wall</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="container grid-3">
+      <div class="card feature-card">
+        <div class="feature-icon"><i class="fa-solid fa-timeline"></i></i></div>
+        <h3>Share Your Journey</h3>
+        <p class="text-sm text-muted">Post projects at any stage of development and track
+          milestones.</p>
+      </div>
+      <div class="card feature-card">
+        <div class="feature-icon"><i class="fa-solid fa-code-merge"></i></div>
+        <h3>Find Collaborators</h3>
+        <p class="text-sm text-muted">Comment, raise your hand, and connect with developers who need your skills.</p>
+      </div>
+      <div class="card feature-card">
+        <div class="feature-icon"><i class="fa-solid fa-medal"></i></div>
+        <h3>Celebrate Wins</h3>
+        <p class="text-sm text-muted">Completed projects earn a spot on the Celebration Wall for all to see.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; <span id="year"></span> MzansiBuilds.</p>
+    </div>
+  </footer>
+
+  <script src="shared.js"></script>
+  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+
+</html>
