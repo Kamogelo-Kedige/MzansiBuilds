@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="../assets/img/build.png">
+    <title>Dashboard - MzansiBuilds</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="../css/styles.css" />
+    <style>
+        #app {
+            display: none;
+            max-width: 980px;
+            margin: 0 auto;
+            margin-top: 1.5rem;
+        }
+
+        .topbar {
+            margin-bottom: 2rem;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+        }
+
+        .comment-form {
+            margin-top: 1rem;
+        }
+
+        .comment-form textarea,
+        .collaboration-form textarea,
+        .comment-form button,
+        .collaboration-form button {
+            margin-bottom: 0.75rem;
+        }
+
+        .collaboration-form {
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="../../index.html" class="navbar-brand">MzansiBuilds</a>
+            <div class="nav-links">
+                <a href="./dashboard.html">Live Feed</a>
+                <a href="./project.html">Create Project</a>
+                <a href="./my-projects.html">My Projects</a>
+                <a href="./profile.html">Profile</a>
+                <a href="./celebration.html">Celebration Wall</a>
+                <button id="logoutBtnNav" class="nav-logout" type="button">Logout</button>
+            </div>
+            <button class="mobile-toggle" onclick="toggleMobileMenu()" aria-label="Open navigation menu">☰</button>
+        </div>
+        <div id="mobile-menu" class="mobile-menu">
+            <a href="./dashboard.html">Live Feed</a>
+            <a href="./project.html">Create Project</a>
+            <a href="./my-projects.html">My Projects</a>
+            <a href="./profile.html">Profile</a>
+            <a href="./celebration.html">Celebration Wall</a>
+            <button id="logoutBtnMobile" type="button">Logout</button>
+        </div>
+    </nav>
+
+    <main id="app">
+        <div class="topbar">
+            <p id="welcome"></p>
+        </div>
+
+        <section>
+            <h2>Live Feed</h2>
+            <div id="projectsContainer"></div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; <span id="year"></span> MzansiBuilds.</p>
+        </div>
+    </footer>
+
+
+</body>
+
+</html>
