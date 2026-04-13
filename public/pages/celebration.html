@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="../assets/img/build.png">
+    <title>Celebration Wall - MzansiBuilds</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://kit.fontawesome.com/1626dc2da5.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../css/styles.css" />
+
+    <style>
+        #app {
+            display: none;
+            max-width: 900px;
+            margin: 0 auto;
+            margin-top: 1.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="../../index.html" class="navbar-brand">MzansiBuilds</a>
+            <div class="nav-links">
+                <a href="./dashboard.html">Live Feed</a>
+                <a href="./project.html">Create Project</a>
+                <a href="./my-projects.html">My Projects</a>
+                <a href="./profile.html">Profile</a>
+                <a href="./celebration.html">Celebration Wall</a>
+                <button id="logoutBtnNav" class="nav-logout" type="button">Logout</button>
+            </div>
+            <button class="mobile-toggle" onclick="toggleMobileMenu()" aria-label="Open navigation menu">☰</button>
+        </div>
+        <div id="mobile-menu" class="mobile-menu">
+            <a href="./dashboard.html">Live Feed</a>
+            <a href="./project.html">Create Project</a>
+            <a href="./my-projects.html">My Projects</a>
+            <a href="./profile.html">Profile</a>
+            <a href="./celebration.html">Celebration Wall</a>
+            <button id="logoutBtnMobile" type="button">Logout</button>
+        </div>
+    </nav>
+
+    <main id="app">
+        <h1>Celebration Wall <i class="fa-solid fa-champagne-glasses"></i></h1>
+        <div id="completedProjects"></div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; <span id="year"></span> MzansiBuilds.</p>
+        </div>
+    </footer>
+</body>
+
+</html>
