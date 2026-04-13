@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="../assets/img/build.png">
+  <title>Create Project - MzansiBuilds</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    #app {
+      display: none;
+      max-width: 700px;
+      margin: 0 auto;
+      margin-top: 1.5rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: 0 4px 12px rgba(26, 46, 26, 0.06);
+    }
+
+    form div {
+      margin-bottom: 1rem;
+    }
+
+    textarea {
+      min-height: 100px;
+    }
+
+    #message {
+      margin-top: 1rem;
+      color: var(--muted-fg);
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <a href="../../index.html" class="navbar-brand">MzansiBuilds</a>
+      <div class="nav-links">
+        <a href="./dashboard.html">Live Feed</a>
+        <a href="./project.html">Create Project</a>
+        <a href="./my-projects.html">My Projects</a>
+        <a href="./profile.html">Profile</a>
+        <a href="./celebration.html">Celebration Wall</a>
+        <button id="logoutBtnNav" class="nav-logout" type="button">Logout</button>
+      </div>
+      <button class="mobile-toggle" onclick="toggleMobileMenu()" aria-label="Open navigation menu">☰</button>
+    </div>
+    <div id="mobile-menu" class="mobile-menu">
+      <a href="./dashboard.html">Live Feed</a>
+      <a href="./project.html">Create Project</a>
+      <a href="./my-projects.html">My Projects</a>
+      <a href="./profile.html">Profile</a>
+      <a href="./celebration.html">Celebration Wall</a>
+      <button id="logoutBtnMobile" type="button">Logout</button>
+    </div>
+  </nav>
+
+  <main id="app">
+    <h1>Create Project</h1>
+
+    <form id="projectForm">
+      <div>
+        <label for="title">Project Title</label>
+        <input id="title" type="text" required />
+      </div>
+
+      <div>
+        <label for="description">Description</label>
+        <textarea id="description"></textarea>
+      </div>
+
+      <div>
+        <label for="techStack">Tech Stack</label>
+        <input id="techStack" type="text" placeholder="e.g. HTML, CSS, JavaScript, Supabase" required />
+      </div>
+
+      <div>
+        <label for="stage">Stage</label>
+        <select id="stage" required>
+          <option value="">Select stage</option>
+          <option value="idea">Idea</option>
+          <option value="planning">Planning</option>
+          <option value="building">Building</option>
+          <option value="testing">Testing</option>
+          <option value="completed">Completed</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="supportRequired">Support Required</label>
+        <textarea id="supportRequired"></textarea>
+      </div>
+
+      <button type="submit">Create Project</button>
+    </form>
+
+    <p id="message"></p>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; <span id="year"></span> MzansiBuilds.</p>
+    </div>
+  </footer>
+
+</body>
+
+</html>
