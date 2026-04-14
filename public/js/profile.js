@@ -69,6 +69,6 @@ async function updateMyProfile(profile) {
   return data;
 }
 
-// expose functions gloabally
+// expose functions globally
 window.fetchMyProfile = fetchMyProfile;
 window.updateMyProfile = updateMyProfile;
