@@ -82,7 +82,249 @@
         </div>
     </footer>
 
+    <script src="../js/supabaseClient.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/projects.js"></script>
+    <script src="../js/milestones.js"></script>
+    <script src="../js/comments.js"></script>
+    <script src="../js/collaboration.js"></script>
+    <script>
 
+        // toggle menu
+        function toggleMobileMenu() {
+            const menu = document.getElementById("mobile-menu");
+            if (menu) {
+                menu.classList.toggle("open");
+            }
+        }
+
+        const yearEl = document.getElementById("year");
+        if (yearEl) {
+            yearEl.textContent = new Date().getFullYear();
+        }
+
+        // get DOM elements
+        const app = document.getElementById("app");
+        const welcome = document.getElementById("welcome");
+        const logoutBtnNav = document.getElementById("logoutBtnNav");
+        const logoutBtnMobile = document.getElementById("logoutBtnMobile");
+        const projectsContainer = document.getElementById("projectsContainer");
+
+        // protect page
+        async function protectPage() {
+            const { data: sessionData, error: sessionError } =
+                await window.supabaseClient.auth.getSession();
+
+            if (sessionError || !sessionData.session) {
+
+                window.location.replace("./login.html");
+                return;
+            }
+
+            const { data: userData, error: userError } =
+                await window.supabaseClient.auth.getUser();
+
+            if (userError || !userData.user) {
+                await window.supabaseClient.auth.signOut();
+                window.location.replace("./login.html");
+                return;
+            }
+
+            window.supabaseClient.auth.onAuthStateChange((event, session) => {
+                if (!session) {
+                    window.location.replace("./login.html");
+                }
+            });
+
+            welcome.textContent = `Logged in as ${userData.user.email}`;
+            app.style.display = "block";
+        }
+
+        // show milestones for each project in the feed
+        function renderMilestones(milestones) {
+            if (!milestones || milestones.length === 0) {
+                return "<p>No milestones yet.</p>";
+            }
+
+            return milestones.map(milestone => `
+      <div class="milestone-item">
+        <p><strong>${milestone.title}</strong></p>
+        <p>${milestone.description || "No description provided."}</p>
+        <p><small>${new Date(milestone.date_achieved).toLocaleString()}</small></p>
+      </div>
+    `).join("");
+        }
+
+        // show comments for each project in the feed
+        function renderComments(comments) {
+            if (!comments || comments.length === 0) {
+                return "<p>No comments yet.</p>";
+            }
+
+            return comments.map(comment => `
+      <div class="comment-item">
+        <p><strong>${comment.profiles?.name ?? "Unknown"} ${comment.profiles?.surname ?? ""}</strong></p>
+        <p>${comment.content}</p>
+        <p><small>${new Date(comment.created_at).toLocaleString()}</small></p>
+      </div>
+    `).join("");
+        }
+
+        // show collaboration requests for each project in the feed
+        function renderCollaborations(collaborations) {
+            if (!collaborations || collaborations.length === 0) {
+                return "<p>No collaboration requests yet.</p>";
+            }
+
+            return collaborations.map(request => `
+    <div class="collaboration-item">
+      <p><strong>${request.profiles?.name ?? "Unknown"} ${request.profiles?.surname ?? ""}</strong></p>
+      <p>${request.message || "No message provided."}</p>
+      <p><strong>Status:</strong> ${request.status}</p>
+      <p><small>${new Date(request.created_at).toLocaleString()}</small></p>
+    </div>
+  `).join("");
+        }
+
+        // load the live feed
+        async function loadProjects() {
+            try {
+                const projects = await window.fetchAllProjects();
+
+                if (!projects.length) {
+                    projectsContainer.innerHTML = "<p>No projects yet.</p>";
+                    return;
+                }
+
+                const cards = await Promise.all(
+                    projects.map(async (project) => {
+
+
+                        const milestones = await window.fetchMilestonesByProject(project.project_id);
+                        const comments = await window.fetchCommentsByProject(project.project_id);
+                        const collaborations = await window.fetchCollaborationsByProject(project.project_id);
+
+                        return `
+            <div class="project-card">
+              <h3>${project.title}</h3>
+              <p><strong>By:</strong> ${project.profiles?.name ?? "Unknown"} ${project.profiles?.surname ?? ""}</p>
+              <p><strong>Tech Stack:</strong> ${project.tech_stack || "Not specified"}</p>
+              <p><strong>Stage:</strong> ${project.stage}</p>
+              <p><strong>Support Required:</strong> ${project.support_required || "None"}</p>
+              <p>${project.description || "No description provided."}</p>
+              <p><strong>Status:</strong> ${project.is_complete ? "Completed" : "In Progress"}</p>
+
+              <hr />
+
+              <h4>Milestones</h4>
+              <div>
+                ${renderMilestones(milestones)}
+              </div>
+
+              <hr />
+
+              <h4>Comments</h4>
+              <div id="comments-${project.project_id}">
+                ${renderComments(comments)}
+              </div>
+
+              <form class="comment-form" data-project-id="${project.project_id}">
+                <textarea
+                  name="commentContent"
+                  placeholder="Write a comment..."
+                  required
+                ></textarea>
+                <button type="submit">Post Comment</button>
+              </form>
+
+              <hr />
+
+              <h4>Collaboration Requests</h4>
+    <div id="collaborations-${project.project_id}">
+      ${renderCollaborations(collaborations)}
+    </div>
+
+    <form class="collaboration-form" data-project-id="${project.project_id}">
+      <textarea
+        name="collaborationMessage"
+        placeholder="Explain how you'd like to collaborate..."
+      ></textarea>
+      <button type="submit">Raise Hand for Collaboration</button>
+    </form>
+
+
+            </div>
+          `;
+                    })
+                );
+
+                projectsContainer.innerHTML = cards.join("");
+                attachCommentFormListeners();
+                attachCollaborationFormListeners();
+            } catch (err) {
+                projectsContainer.innerHTML = `<p>${err.message}</p>`;
+            }
+        }
+
+        // attach comment form handlers after cards are rendered
+        function attachCommentFormListeners() {
+            const forms = document.querySelectorAll(".comment-form");
+
+            forms.forEach(form => {
+                form.addEventListener("submit", async (e) => {
+                    e.preventDefault();
+
+                    const projectId = form.getAttribute("data-project-id");
+                    const content = form.querySelector('textarea[name="commentContent"]').value;
+
+                    try {
+                        await window.addComment(projectId, content);
+                        await loadProjects();
+                    } catch (err) {
+                        alert(err.message);
+                    }
+                });
+            });
+        }
+
+        //  Attach collaboration request handlers after cards are rendered.
+        function attachCollaborationFormListeners() {
+            const forms = document.querySelectorAll(".collaboration-form");
+
+            forms.forEach(form => {
+                form.addEventListener("submit", async (e) => {
+                    e.preventDefault();
+
+                    const projectId = form.getAttribute("data-project-id");
+                    const message = form.querySelector('textarea[name="collaborationMessage"]').value;
+
+                    try {
+                        await window.createCollaborationRequest(projectId, message);
+                        await loadProjects();
+                    } catch (err) {
+                        alert(err.message);
+                    }
+                });
+            });
+        }
+
+        // Handle user logout
+        async function performLogout() {
+            await window.supabaseClient.auth.signOut();
+            window.location.replace("./login.html");
+        }
+
+        logoutBtnNav.addEventListener("click", performLogout);
+        logoutBtnMobile.addEventListener("click", performLogout);
+
+        // initialize dashboard
+        async function initDashboard() {
+            await protectPage();
+            await loadProjects();
+        }
+
+        initDashboard();
+    </script>
 </body>
 
 </html>
