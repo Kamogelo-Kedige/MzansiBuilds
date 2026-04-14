@@ -54,6 +54,84 @@
             <p>&copy; <span id="year"></span> MzansiBuilds.</p>
         </div>
     </footer>
+
+    <script src="../js/supabaseClient.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/celebration.js"></script>
+
+    <script>
+        // Toggle the mobile navigation menu
+        function toggleMobileMenu() {
+            const menu = document.getElementById("mobile-menu");
+            if (menu) {
+                menu.classList.toggle("open");
+            }
+        }
+
+        // Set the current year in the footer
+        const yearEl = document.getElementById("year");
+        if (yearEl) {
+            yearEl.textContent = new Date().getFullYear();
+        }
+
+        // Get references to important DOM elements
+        const app = document.getElementById("app");
+        const completedProjects = document.getElementById("completedProjects");
+        const logoutBtnNav = document.getElementById("logoutBtnNav");
+        const logoutBtnMobile = document.getElementById("logoutBtnMobile");
+
+        // Handle user logout
+        async function performLogout() {
+            await window.supabaseClient.auth.signOut();
+            window.location.replace("./login.html");
+        }
+
+        // Attach logout handlers to both desktop and mobile logout buttons
+        logoutBtnNav.addEventListener("click", performLogout);
+        logoutBtnMobile.addEventListener("click", performLogout);
+
+        async function protectPage() {
+            const { data: sessionData, error: sessionError } =
+                await window.supabaseClient.auth.getSession();
+
+            if (sessionError || !sessionData.session) {
+                window.location.replace("./login.html");
+                return;
+            }
+
+            app.style.display = "block";
+        }
+
+        // Load completed projects and display them on the celebration wall
+        async function loadCelebrationWall() {
+            try {
+                const projects = await fetchCompletedProjects();
+
+                if (!projects.length) {
+                    completedProjects.innerHTML = "<p>No completed projects yet.</p>";
+                    return;
+                }
+
+                completedProjects.innerHTML = projects.map(project => `
+          <div class="project-card">
+            <h3>${project.title}</h3>
+            <p><strong>By:</strong> ${project.profiles?.name ?? "Unknown"} ${project.profiles?.surname ?? ""}</p>
+            <p>${project.description || "No description provided."}</p>
+            <p><strong>Completed:</strong> ${new Date(project.updated_at).toLocaleString()}</p>
+          </div>
+        `).join("");
+            } catch (err) {
+                completedProjects.innerHTML = `<p>${err.message}</p>`;
+            }
+        }
+
+        async function initPage() {
+            await protectPage();
+            await loadCelebrationWall();
+        }
+
+        initPage();
+    </script>
 </body>
 
 </html>
