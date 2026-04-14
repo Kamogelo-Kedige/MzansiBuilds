@@ -67,6 +67,6 @@ async function fetchCommentsByProject(projectId) {
   return data;
 }
 
-// expose fucntions globally
+// expose functions globally
 window.addComment = addComment;
 window.fetchCommentsByProject = fetchCommentsByProject;
