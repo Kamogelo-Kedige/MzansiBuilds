@@ -108,6 +108,88 @@
     </div>
   </footer>
 
+  <script src="../js/supabaseClient.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/projects.js"></script>
+
+  <script>
+    function toggleMobileMenu() {
+      const menu = document.getElementById("mobile-menu");
+      if (menu) {
+        menu.classList.toggle("open");
+      }
+    }
+
+    const yearEl = document.getElementById("year");
+    if (yearEl) {
+      yearEl.textContent = new Date().getFullYear();
+    }
+
+    const app = document.getElementById("app");
+    const form = document.getElementById("projectForm");
+    const message = document.getElementById("message");
+    const logoutBtnNav = document.getElementById("logoutBtnNav");
+    const logoutBtnMobile = document.getElementById("logoutBtnMobile");
+
+    async function performLogout() {
+      await window.supabaseClient.auth.signOut();
+      window.location.replace("./login.html");
+    }
+
+    logoutBtnNav.addEventListener("click", performLogout);
+    logoutBtnMobile.addEventListener("click", performLogout);
+
+    async function protectPage() {
+      const { data: sessionData, error: sessionError } =
+        await window.supabaseClient.auth.getSession();
+
+      if (sessionError || !sessionData.session) {
+
+        window.location.replace("./login.html");
+        return;
+      }
+
+      const { data: userData, error: userError } =
+        await window.supabaseClient.auth.getUser();
+
+      if (userError || !userData.user) {
+        await window.supabaseClient.auth.signOut();
+        window.location.replace("./login.html");
+        return;
+      }
+
+      window.supabaseClient.auth.onAuthStateChange((event, session) => {
+        if (!session) {
+          window.location.replace("./login.html");
+        }
+      });
+
+      app.style.display = "block";
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const project = {
+        title: document.getElementById("title").value.trim(),
+        description: document.getElementById("description").value.trim(),
+        stage: document.getElementById("stage").value,
+        supportRequired: document.getElementById("supportRequired").value.trim(),
+        techStack: document.getElementById("techStack").value.trim()
+      };
+
+      try {
+        await createProject(project);
+        message.textContent = "Project created successfully.";
+        form.reset();
+      } catch (err) {
+        message.textContent = err.message;
+      }
+    });
+
+    protectPage();
+  </script>
+
 </body>
 
 </html>
