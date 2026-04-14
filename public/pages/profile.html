@@ -106,6 +106,146 @@
         </div>
     </footer>
 
+    <script src="../js/supabaseClient.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/profile.js"></script>
+
+
+    <script>
+        // Toggle mobile menu visibility
+        function toggleMobileMenu() {
+            const menu = document.getElementById("mobile-menu");
+            if (menu) {
+                menu.classList.toggle("open");
+            }
+        }
+
+        // Set the current year in the footer.
+        const yearEl = document.getElementById("year");
+        if (yearEl) {
+            yearEl.textContent = new Date().getFullYear();
+        }
+
+
+        // Grab references to important page elements.
+
+        const app = document.getElementById("app");
+        const form = document.getElementById("profileForm");
+        const message = document.getElementById("message");
+        const logoutBtnNav = document.getElementById("logoutBtnNav");
+        const logoutBtnMobile = document.getElementById("logoutBtnMobile");
+
+        async function performLogout() {
+            await window.supabaseClient.auth.signOut();
+            window.location.replace("./login.html");
+        }
+
+        logoutBtnNav.addEventListener("click", performLogout);
+        logoutBtnMobile.addEventListener("click", performLogout);
+
+
+        //  Protect the page by checking whether the user is logged in.
+
+        async function protectPage() {
+            const { data: sessionData, error: sessionError } =
+                await window.supabaseClient.auth.getSession();
+
+            if (sessionError || !sessionData.session) {
+
+                window.location.replace("./login.html");
+                return;
+            }
+
+            const { data: userData, error: userError } =
+                await window.supabaseClient.auth.getUser();
+
+            if (userError || !userData.user) {
+                await window.supabaseClient.auth.signOut();
+                window.location.replace("./login.html");
+                return;
+            }
+
+            window.supabaseClient.auth.onAuthStateChange((event, session) => {
+                if (!session) {
+                    window.location.replace("./login.html");
+                }
+            });
+
+            app.style.display = "block";
+        }
+
+
+        //Load the current user's profile data and fill the form.
+
+        async function loadProfile() {
+            try {
+
+                // Fetch the logged-in user's profile row.
+                const profile = await window.fetchMyProfile();
+
+                // Fill the form fields with current profile values.
+                document.getElementById("name").value = profile.name || "";
+                document.getElementById("surname").value = profile.surname || "";
+                document.getElementById("email").value = profile.email || "";
+                document.getElementById("createdAt").value =
+                    new Date(profile.created_at).toLocaleString();
+            } catch (err) {
+                message.textContent = err.message;
+            }
+        }
+
+
+        //  Handle profile form submission.
+
+        form.addEventListener("submit", async (e) => {
+
+            // Prevent normal browser form submission.
+
+            e.preventDefault();
+
+
+            //  Build the updated profile object from the form fields.
+
+            const profile = {
+                name: document.getElementById("name").value.trim(),
+                surname: document.getElementById("surname").value.trim()
+            };
+
+            try {
+
+                // Send the update request to Supabase.
+
+                const updatedProfile = await window.updateMyProfile(profile);
+
+
+                //  Refresh the visible values using the returned updated row.
+
+                document.getElementById("name").value = updatedProfile.name || "";
+                document.getElementById("surname").value = updatedProfile.surname || "";
+
+
+                //Show success feedback.
+
+                message.textContent = "Profile updated successfully.";
+            } catch (err) {
+
+                // Show any error message.
+
+                message.textContent = err.message;
+            }
+        });
+
+
+        // Initialize the page
+
+        async function initPage() {
+            await protectPage();
+            await loadProfile();
+        }
+
+        initPage();
+    </script>
+
 
 </body>
 
