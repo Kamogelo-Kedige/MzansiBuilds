@@ -17,6 +17,19 @@
             margin: 0 auto;
             margin-top: 1.5rem;
         }
+
+        .milestone-form,
+        .stage-form {
+            margin-top: 1rem;
+        }
+
+        .milestone-form input,
+        .milestone-form textarea,
+        .milestone-form button,
+        .stage-form select,
+        .stage-form button {
+            margin-bottom: 0.75rem;
+        }
     </style>
 </head>
 
@@ -55,6 +68,205 @@
             <p>&copy; <span id="year"></span> MzansiBuilds.</p>
         </div>
     </footer>
+
+    <script src="../js/supabaseClient.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/projects.js"></script>
+    <script src="../js/milestones.js"></script>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById("mobile-menu");
+            if (menu) {
+                menu.classList.toggle("open");
+            }
+        }
+
+        const yearEl = document.getElementById("year");
+        if (yearEl) {
+            yearEl.textContent = new Date().getFullYear();
+        }
+
+        // Get references to DOM elements
+        const app = document.getElementById("app");
+        const myProjectsContainer = document.getElementById("myProjectsContainer");
+        const logoutBtnNav = document.getElementById("logoutBtnNav");
+        const logoutBtnMobile = document.getElementById("logoutBtnMobile");
+
+        async function performLogout() {
+            await window.supabaseClient.auth.signOut();
+            window.location.replace("./login.html");
+        }
+
+        logoutBtnNav.addEventListener("click", performLogout);
+        logoutBtnMobile.addEventListener("click", performLogout);
+
+        // Protect the page by checking for an active session
+        async function protectPage() {
+            const { data: sessionData, error: sessionError } =
+                await window.supabaseClient.auth.getSession();
+
+            if (sessionError || !sessionData.session) {
+
+                window.location.replace("./login.html");
+                return;
+            }
+
+            const { data: userData, error: userError } =
+                await window.supabaseClient.auth.getUser();
+
+            if (userError || !userData.user) {
+                await window.supabaseClient.auth.signOut();
+                window.location.replace("./login.html");
+                return;
+            }
+
+            window.supabaseClient.auth.onAuthStateChange((event, session) => {
+                if (!session) {
+                    window.location.replace("./login.html");
+                }
+            });
+
+            app.style.display = "block";
+        }
+
+        // Render milestones for a project
+        function renderMilestones(milestones) {
+            if (!milestones || milestones.length === 0) {
+                return "<p>No milestones yet.</p>";
+            }
+
+            return milestones.map(milestone => `
+        <div class="milestone-item">
+          <p><strong>${milestone.title}</strong></p>
+          <p>${milestone.description || "No description provided."}</p>
+          <p><small>${new Date(milestone.date_achieved).toLocaleString()}</small></p>
+        </div>
+      `).join("");
+        }
+
+        // Load the current user's projects and display them on the page
+        async function loadMyProjects() {
+            try {
+                const projects = await window.fetchMyProjects();
+
+                if (!projects.length) {
+                    myProjectsContainer.innerHTML = "<p>You have not created any projects yet.</p>";
+                    return;
+                }
+
+                const cards = await Promise.all(
+                    projects.map(async (project) => {
+                        const milestones = await window.fetchMilestonesByProject(project.project_id);
+
+                        return `
+              <div class="project-card">
+                <h3>${project.title}</h3>
+                <p><strong>Tech Stack:</strong> ${project.tech_stack || "Not specified"}</p>
+                <p><strong>Current Stage:</strong> ${project.stage}</p>
+                <p><strong>Support Required:</strong> ${project.support_required || "None"}</p>
+                <p>${project.description || "No description provided."}</p>
+                <p><strong>Status:</strong> ${project.is_complete ? "Completed" : "In Progress"}</p>
+
+                <form class="stage-form" data-project-id="${project.project_id}">
+                  <label><strong>Update Stage</strong></label>
+                  <select name="stage" required>
+                    <option value="idea" ${project.stage === "idea" ? "selected" : ""}>Idea</option>
+                    <option value="planning" ${project.stage === "planning" ? "selected" : ""}>Planning</option>
+                    <option value="building" ${project.stage === "building" ? "selected" : ""}>Building</option>
+                    <option value="testing" ${project.stage === "testing" ? "selected" : ""}>Testing</option>
+                    <option value="completed" ${project.stage === "completed" ? "selected" : ""}>Completed</option>
+                  </select>
+                  <button type="submit">Update Stage</button>
+                </form>
+
+                <hr />
+
+                <h4>Milestones</h4>
+                <div id="milestones-${project.project_id}">
+                  ${renderMilestones(milestones)}
+                </div>
+
+                <form class="milestone-form" data-project-id="${project.project_id}">
+                  <input
+                    type="text"
+                    name="milestoneTitle"
+                    placeholder="Milestone title"
+                    required
+                  />
+                  <textarea
+                    name="milestoneDescription"
+                    placeholder="Milestone description"
+                  ></textarea>
+                  <button type="submit">Add Milestone</button>
+                </form>
+              </div>
+            `;
+                    })
+                );
+
+                myProjectsContainer.innerHTML = cards.join("");
+                attachStageFormListeners();
+                attachMilestoneFormListeners();
+            } catch (err) {
+                myProjectsContainer.innerHTML = `<p>${err.message}</p>`;
+            }
+        }
+
+        // Attach submit handlers to all stage update forms
+        function attachStageFormListeners() {
+            const forms = document.querySelectorAll(".stage-form");
+
+            forms.forEach(form => {
+                form.addEventListener("submit", async (e) => {
+                    e.preventDefault();
+
+                    const projectId = form.getAttribute("data-project-id");
+                    const newStage = form.querySelector('select[name="stage"]').value;
+
+                    try {
+                        await window.updateProjectStage(projectId, newStage);
+                        await loadMyProjects();
+                    } catch (err) {
+                        alert(err.message);
+                    }
+                });
+            });
+        }
+
+        // Attach submit handlers to all milestone forms
+        function attachMilestoneFormListeners() {
+            const forms = document.querySelectorAll(".milestone-form");
+
+            forms.forEach(form => {
+                form.addEventListener("submit", async (e) => {
+                    e.preventDefault();
+
+                    const projectId = form.getAttribute("data-project-id");
+                    const title = form.querySelector('input[name="milestoneTitle"]').value;
+                    const description = form.querySelector('textarea[name="milestoneDescription"]').value;
+
+                    try {
+                        await window.addMilestone(projectId, title, description);
+                        await loadMyProjects();
+                    } catch (err) {
+                        alert(err.message);
+                    }
+                });
+            });
+        }
+
+        // Initialize the page
+        async function initPage() {
+            await protectPage();
+            await loadMyProjects();
+        }
+
+        initPage();
+    </script>
+
+
+
 </body>
 
 </html>
