@@ -72,6 +72,56 @@
         </div>
     </footer>
 
+    <script src="supabaseClient.js"></script>
+    <script src="auth.js"></script>
+    <script>
+        // Get references to form elements
+        const form = document.getElementById("signupForm");
+        const message = document.getElementById("message");
+        const passwordInput = document.getElementById("password");
+        const passwordToggle = document.getElementById("passwordToggle");
+        const eyeIcon = document.getElementById("eyeIcon");
+        const signupBtn = document.getElementById("signupBtn");
+        const yearEl = document.getElementById("year");
+
+        // Set current year in footer
+        if (yearEl) {
+            yearEl.textContent = new Date().getFullYear();
+        }
+
+        // Toggle password visibility
+        passwordToggle.addEventListener("click", () => {
+            const showPassword = passwordInput.type === "password";
+            passwordInput.type = showPassword ? "text" : "password";
+            eyeIcon.classList.toggle("show-password", showPassword);
+        });
+
+        //add event listener for form submission
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            //get form values and trim whitespace
+            const name = document.getElementById("name").value.trim();
+            const surname = document.getElementById("surname").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value;
+            message.textContent = "";
+            signupBtn.classList.add("loading");
+
+            //call the signUpUser function and handle success/error
+            try {
+                await signUpUser(name, surname, email, password);
+                message.textContent = "Signup successful. Check your email if confirmation is enabled.";
+                form.reset();
+                window.location.href = "login.html";
+            } catch (err) {
+                message.textContent = err.message;
+            } finally {
+                signupBtn.classList.remove("loading");
+            }
+        });
+    </script>
+
 </body>
 
 </html>
