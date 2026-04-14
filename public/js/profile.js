@@ -28,7 +28,7 @@ async function fetchMyProfile() {
     throw error;
   }
 
-  // return the fetched profile data to the caller
+  // return the fetched profile information
   return data;
 }
 
