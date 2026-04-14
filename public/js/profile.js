@@ -1,4 +1,4 @@
-// fech the current user's profile details
+// fetch the current user's profile details
 async function fetchMyProfile() {
   //get current logged in user
   const user = await getCurrentUser();
