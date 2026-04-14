@@ -113,6 +113,7 @@
   <script src="../js/projects.js"></script>
 
   <script>
+    // Toggle the mobile navigation menu
     function toggleMobileMenu() {
       const menu = document.getElementById("mobile-menu");
       if (menu) {
@@ -120,17 +121,20 @@
       }
     }
 
+    // Set the current year in the footer
     const yearEl = document.getElementById("year");
     if (yearEl) {
       yearEl.textContent = new Date().getFullYear();
     }
 
+    // Get references to important DOM elements
     const app = document.getElementById("app");
     const form = document.getElementById("projectForm");
     const message = document.getElementById("message");
     const logoutBtnNav = document.getElementById("logoutBtnNav");
     const logoutBtnMobile = document.getElementById("logoutBtnMobile");
 
+    // Handle user logout
     async function performLogout() {
       await window.supabaseClient.auth.signOut();
       window.location.replace("./login.html");
@@ -139,6 +143,7 @@
     logoutBtnNav.addEventListener("click", performLogout);
     logoutBtnMobile.addEventListener("click", performLogout);
 
+    // Protect the page by checking for an active session
     async function protectPage() {
       const { data: sessionData, error: sessionError } =
         await window.supabaseClient.auth.getSession();
@@ -167,6 +172,7 @@
       app.style.display = "block";
     }
 
+    // Handle form submission to create a new project
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
