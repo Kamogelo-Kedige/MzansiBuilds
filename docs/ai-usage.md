@@ -6,6 +6,7 @@ AI tools were used to assist with:
 - refining documentation structure
 - reviewing database design choices
 - improving code organization ideas
+- reviewing code before merges into main branch
 
 ## How AI Was Not Used
 AI was not used as an unquestioned source of truth.  
