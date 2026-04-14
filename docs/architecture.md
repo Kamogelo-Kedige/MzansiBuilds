@@ -26,11 +26,12 @@ The system uses a browser-based frontend connected directly to Supabase services
 
 ## Main Modules
 - auth.js
-- projects.js
-- comments.js
-- milestones.js
-- collaborations.js
+- project.js
+- comment.js
+- milestone.js
+- collaboration.js
 - celebration.js
+- profile.js
 
 ## Database Design
 Main tables:
