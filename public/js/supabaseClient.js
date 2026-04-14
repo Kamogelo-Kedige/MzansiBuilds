@@ -1,15 +1,11 @@
-// Read values from app-config.js.
-var config = window.APP_CONFIG || {};
-var supabaseUrl = config.SUPABASE_URL;
-var supabasePublishableKey = config.SUPABASE_PUBLISHABLE_KEY;
+const SUPABASE_URL = "https://wnzbbkykjbutxyuvoswa.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_2U-7mrM_tgQTuK605Iopbg_Qcqzfad8";
 
-// Skip initialization when the Supabase library or credentials are not available.
-if (!window.supabase || !supabaseUrl || !supabasePublishableKey) {
-  window.supabaseClient = null;
-} else {
-  // Create one shared Supabase client for all other files.
-  window.supabaseClient = window.supabase.createClient(
-    supabaseUrl,
-    supabasePublishableKey,
-  );
-}
+const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY,
+);
+
+// Expose the client globally for other scripts to use
+window.supabaseClient = supabaseClient;

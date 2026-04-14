@@ -70,7 +70,53 @@
             <p>&copy; <span id="year"></span> MzansiBuilds.</p>
         </div>
     </footer>
+    <script src="../js/supabaseClient.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
 
+        //get references to DOM elements
+        const form = document.getElementById("loginForm");
+        const message = document.getElementById("message");
+        const passwordInput = document.getElementById("password");
+        const passwordToggle = document.getElementById("passwordToggle");
+        const eyeIcon = document.getElementById("eyeIcon");
+        const loginBtn = document.getElementById("loginBtn");
+        const yearEl = document.getElementById("year");
+
+        //for the footer year
+        if (yearEl) {
+            yearEl.textContent = new Date().getFullYear();
+        }
+
+        //event listener for password visibility toggle
+        passwordToggle.addEventListener("click", () => {
+            const showPassword = passwordInput.type === "password";
+            passwordInput.type = showPassword ? "text" : "password";
+            eyeIcon.classList.toggle("show-password", showPassword);
+        });
+
+        //event listener for form submission
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            //get email and password values
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value;
+            message.textContent = "";
+            //show loading state on button
+            loginBtn.classList.add("loading");
+
+            //attempt to sign in the user
+            try {
+                await signInUser(email, password);
+                window.location.href = "./dashboard.html";
+            } catch (err) {
+                message.textContent = err.message;
+            } finally {
+                loginBtn.classList.remove("loading");
+            }
+        });
+    </script>
 </body>
 
 </html>
