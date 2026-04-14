@@ -68,7 +68,3 @@ async function updateMyProfile(profile) {
   // return the updated profile data to the caller
   return data;
 }
-
-// expose functions globally
-window.fetchMyProfile = fetchMyProfile;
-window.updateMyProfile = updateMyProfile;
