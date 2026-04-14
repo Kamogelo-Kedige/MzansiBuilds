@@ -108,6 +108,94 @@
     </div>
   </footer>
 
+  <script src="../js/supabaseClient.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/project.js"></script>
+
+  <script>
+    // Toggle the mobile navigation menu
+    function toggleMobileMenu() {
+      const menu = document.getElementById("mobile-menu");
+      if (menu) {
+        menu.classList.toggle("open");
+      }
+    }
+
+    // Set the current year in the footer
+    const yearEl = document.getElementById("year");
+    if (yearEl) {
+      yearEl.textContent = new Date().getFullYear();
+    }
+
+    // Get references to important DOM elements
+    const app = document.getElementById("app");
+    const form = document.getElementById("projectForm");
+    const message = document.getElementById("message");
+    const logoutBtnNav = document.getElementById("logoutBtnNav");
+    const logoutBtnMobile = document.getElementById("logoutBtnMobile");
+
+    // Handle user logout
+    async function performLogout() {
+      await window.supabaseClient.auth.signOut();
+      window.location.replace("./login.html");
+    }
+
+    logoutBtnNav.addEventListener("click", performLogout);
+    logoutBtnMobile.addEventListener("click", performLogout);
+
+    // Protect the page by checking for an active session
+    async function protectPage() {
+      const { data: sessionData, error: sessionError } =
+        await window.supabaseClient.auth.getSession();
+
+      if (sessionError || !sessionData.session) {
+
+        window.location.replace("./login.html");
+        return;
+      }
+
+      const { data: userData, error: userError } =
+        await window.supabaseClient.auth.getUser();
+
+      if (userError || !userData.user) {
+        await window.supabaseClient.auth.signOut();
+        window.location.replace("./login.html");
+        return;
+      }
+
+      window.supabaseClient.auth.onAuthStateChange((event, session) => {
+        if (!session) {
+          window.location.replace("./login.html");
+        }
+      });
+
+      app.style.display = "block";
+    }
+
+    // Handle form submission to create a new project
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const project = {
+        title: document.getElementById("title").value.trim(),
+        description: document.getElementById("description").value.trim(),
+        stage: document.getElementById("stage").value,
+        supportRequired: document.getElementById("supportRequired").value.trim(),
+        techStack: document.getElementById("techStack").value.trim()
+      };
+
+      try {
+        await createProject(project);
+        message.textContent = "Project created successfully.";
+        form.reset();
+      } catch (err) {
+        message.textContent = err.message;
+      }
+    });
+
+    protectPage();
+  </script>
+
 </body>
 
 </html>
