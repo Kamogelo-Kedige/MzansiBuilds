@@ -74,10 +74,3 @@ async function getCurrentSession() {
   if (error) throw error;
   return data.session;
 }
-
-// get the current user's profile
-async function getCurrentUser() {
-  const { data, error } = await window.supabaseClient.auth.getUser();
-  if (error) throw error;
-  return data.user;
-}
