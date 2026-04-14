@@ -2,46 +2,20 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8" />
-
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <link rel="icon" type="image/png" href="../assets/img/build.png">
-
-    <title>My Profile - MzansiBuilds</title>
-
-
+    <title>Celebration Wall - MzansiBuilds</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://kit.fontawesome.com/1626dc2da5.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../css/styles.css" />
 
     <style>
         #app {
             display: none;
-            max-width: 650px;
+            max-width: 900px;
             margin: 0 auto;
             margin-top: 1.5rem;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 1.5rem;
-            box-shadow: 0 4px 12px rgba(26, 46, 26, 0.06);
-        }
-
-        form div {
-            margin-bottom: 1rem;
-        }
-
-        #message {
-            margin-top: 1rem;
-            font-weight: bold;
-            color: var(--muted-fg);
-        }
-
-        .readonly {
-            background-color: #edf1ed;
-            color: var(--muted-fg);
         }
     </style>
 </head>
@@ -71,33 +45,8 @@
     </nav>
 
     <main id="app">
-        <h1>My Profile</h1>
-
-        <form id="profileForm">
-            <div>
-                <label for="name">Name</label>
-                <input id="name" type="text" required />
-            </div>
-
-            <div>
-                <label for="surname">Surname</label>
-                <input id="surname" type="text" required />
-            </div>
-
-            <div>
-                <label for="email">Email</label>
-                <input id="email" type="email" class="readonly" readonly />
-            </div>
-
-            <div>
-                <label for="createdAt">Member Since</label>
-                <input id="createdAt" type="text" class="readonly" readonly />
-            </div>
-
-            <button type="submit">Update Profile</button>
-        </form>
-
-        <p id="message"></p>
+        <h1>Celebration Wall <i class="fa-solid fa-champagne-glasses"></i></h1>
+        <div id="completedProjects"></div>
     </main>
 
     <footer class="footer">
@@ -105,8 +54,6 @@
             <p>&copy; <span id="year"></span> MzansiBuilds.</p>
         </div>
     </footer>
-
-
 </body>
 
 </html>

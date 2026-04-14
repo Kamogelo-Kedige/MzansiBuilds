@@ -2,53 +2,59 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/public/css/styles.css">
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="../assets/img/build.png">
+    <title>My Projects - MzansiBuilds</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <title>My Projects — MzansiBuilds</title>
+    <link rel="stylesheet" href="../css/styles.css" />
+
+    <style>
+        #app {
+            display: none;
+            max-width: 980px;
+            margin: 0 auto;
+            margin-top: 1.5rem;
+        }
+    </style>
 </head>
 
 <body>
     <nav class="navbar">
         <div class="container">
-            <a href="../../index.html" class="navbar-brand">
-                MzansiBuilds
-            </a>
+            <a href="../../index.html" class="navbar-brand">MzansiBuilds</a>
             <div class="nav-links">
-                <a href="../../index.html">Home</a>
-                <a href="feed.html">Feed</a>
-                <a href="celebration-wall.html">Celebration Wall</a>
-                <span id="auth-links"></span>
+                <a href="./dashboard.html">Live Feed</a>
+                <a href="./project.html">Create Project</a>
+                <a href="./my-projects.html">My Projects</a>
+                <a href="./profile.html">Profile</a>
+                <a href="./celebration.html">Celebration Wall</a>
+                <button id="logoutBtnNav" class="nav-logout" type="button">Logout</button>
             </div>
-            <button class="mobile-toggle" onclick="toggleMobileMenu()">☰</button>
+            <button class="mobile-toggle" onclick="toggleMobileMenu()" aria-label="Open navigation menu">☰</button>
         </div>
         <div id="mobile-menu" class="mobile-menu">
-            <a href="../../index.html">Home</a>
-            <a href="feed.html">Feed</a>
-            <a href="celebration-wall.html">Celebration Wall</a>
-            <span id="auth-links-mobile"></span>
+            <a href="./dashboard.html">Live Feed</a>
+            <a href="./project.html">Create Project</a>
+            <a href="./my-projects.html">My Projects</a>
+            <a href="./profile.html">Profile</a>
+            <a href="./celebration.html">Celebration Wall</a>
+            <button id="logoutBtnMobile" type="button">Logout</button>
         </div>
     </nav>
 
-    <div class="container py-8">
-        <div class="flex justify-between items-center mb-8" style="flex-wrap:wrap;gap:1rem">
-            <div>
-                <h1>My Projects</h1>
-                <p class="text-muted">Manage and update your projects</p>
-            </div>
-            <a href="new-project.html" class="btn btn-primary">+ New Project</a>
-        </div>
-        <div id="projects-list" class="space-y-4">
-            <div class="py-20 text-center">
-                <div class="spinner"></div>
-            </div>
-        </div>
-    </div>
+    <main id="app">
+        <h1>My Projects</h1>
 
-    <script src="../../config/app-config.js"></script>
-    <script src="../js/supabaseClient.js"></script>
-    <script src="../js/shared.js"></script>
+        <div id="myProjectsContainer"></div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; <span id="year"></span> MzansiBuilds.</p>
+        </div>
+    </footer>
 </body>
 
 </html>

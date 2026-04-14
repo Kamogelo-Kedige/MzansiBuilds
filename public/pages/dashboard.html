@@ -2,46 +2,41 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8" />
-
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <link rel="icon" type="image/png" href="../assets/img/build.png">
-
-    <title>My Profile - MzansiBuilds</title>
-
-
+    <title>Dashboard - MzansiBuilds</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="../css/styles.css" />
-
     <style>
         #app {
             display: none;
-            max-width: 650px;
+            max-width: 980px;
             margin: 0 auto;
             margin-top: 1.5rem;
+        }
+
+        .topbar {
+            margin-bottom: 2rem;
             background: var(--card);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 1.5rem;
-            box-shadow: 0 4px 12px rgba(26, 46, 26, 0.06);
+            padding: 1.25rem;
         }
 
-        form div {
-            margin-bottom: 1rem;
-        }
-
-        #message {
+        .comment-form {
             margin-top: 1rem;
-            font-weight: bold;
-            color: var(--muted-fg);
         }
 
-        .readonly {
-            background-color: #edf1ed;
-            color: var(--muted-fg);
+        .comment-form textarea,
+        .collaboration-form textarea,
+        .comment-form button,
+        .collaboration-form button {
+            margin-bottom: 0.75rem;
+        }
+
+        .collaboration-form {
+            margin-top: 1rem;
         }
     </style>
 </head>
@@ -71,33 +66,14 @@
     </nav>
 
     <main id="app">
-        <h1>My Profile</h1>
+        <div class="topbar">
+            <p id="welcome"></p>
+        </div>
 
-        <form id="profileForm">
-            <div>
-                <label for="name">Name</label>
-                <input id="name" type="text" required />
-            </div>
-
-            <div>
-                <label for="surname">Surname</label>
-                <input id="surname" type="text" required />
-            </div>
-
-            <div>
-                <label for="email">Email</label>
-                <input id="email" type="email" class="readonly" readonly />
-            </div>
-
-            <div>
-                <label for="createdAt">Member Since</label>
-                <input id="createdAt" type="text" class="readonly" readonly />
-            </div>
-
-            <button type="submit">Update Profile</button>
-        </form>
-
-        <p id="message"></p>
+        <section>
+            <h2>Live Feed</h2>
+            <div id="projectsContainer"></div>
+        </section>
     </main>
 
     <footer class="footer">

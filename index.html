@@ -4,46 +4,113 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="/public/assets/img/build.png">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://kit.fontawesome.com/1626dc2da5.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link rel="stylesheet" href="/public/css/styles.css">
   <title>MzansiBuilds</title>
+
+  <style>
+    body {
+      padding: 0;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #0ebe78 0%, #1a2e1a 100%);
+      color: #fff;
+      padding: 4rem 0;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.125rem;
+      opacity: 0.9;
+      max-width: 600px;
+    }
+
+    .hero .btn-primary {
+      background: #fff;
+      color: var(--primary);
+    }
+
+    .hero .btn-primary:hover {
+      background: #f0f0f0;
+    }
+
+    .hero .btn-outline {
+      border-color: rgba(255, 255, 255, 0.4);
+      color: #fff;
+    }
+
+    .hero .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    @media (max-width: 640px) {
+      .hero h1 {
+        font-size: 1.75rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+    }
+
+
+    .features {
+      padding: 4rem 0;
+    }
+
+    .feature-card {
+      text-align: center;
+      padding: 2rem 1.5rem;
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 1rem;
+      background: rgba(14, 190, 120, 0.1);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+    }
+  </style>
 </head>
 
 <body>
   <nav class="navbar">
     <div class="container">
-      <a href="./index.html" class="navbar-brand">
+      <a href="index.html" class="navbar-brand">
         MzansiBuilds
       </a>
       <div class="nav-links">
-        <a href="public/pages/signup.html">Sign Up</a>
-        <a href="public/pages/login.html">Log In</a>
-        <a href="public/pages/feed.html">Live Feed</a>
-        <a href="public/pages/celebration-wall.html">Celebration Wall</a>
+        <a href="signup.html">Sign Up</a>
+        <a href="login.html">Log In</a>
         <span id="auth-links"></span>
       </div>
-      <button class="mobile-toggle" onclick="toggleMobileMenu()" aria-label="Toggle mobile menu">☰</button>
+      <button class="mobile-toggle" onclick="toggleMobileMenu()">☰</button>
     </div>
     <div id="mobile-menu" class="mobile-menu">
-      <a href="public/pages/signup.html">Sign Up</a>
-      <a href="public/pages/login.html">Log In</a>
-      <a href="public/pages/feed.html">Live Feed</a>
-      <a href="public/pages/celebration-wall.html">Celebration Wall</a>
-      <span id="auth-links-mobile"></span>
+      <a href="signup.html">Sign Up</a>
+      <a href="login.html">Log In</a>
+
+
     </div>
   </nav>
 
   <section class="hero">
     <div class="container">
       <h1>Build in Public.<br>Grow Together.</h1>
-      <p>MzansiBuilds is a platform that helps developers to build publicly and keep up with what other developers are
+      <p>MzansiBuilds is a platform that helps developers to build publicly and keep up with what other developers
+        are
         building.</p>
-      <div class="flex gap-3 mt-4" style="flex-wrap:wrap">
-        <a href="public/pages/feed.html" class="btn btn-primary">View live Feed</a>
-        <a href="public/pages/celebration-wall.html" class="btn btn-outline"> Celebration Wall</a>
-      </div>
     </div>
   </section>
 
@@ -58,7 +125,8 @@
       <div class="card feature-card">
         <div class="feature-icon"><i class="fa-solid fa-code-merge"></i></div>
         <h3>Find Collaborators</h3>
-        <p class="text-sm text-muted">Comment, raise your hand, and connect with developers who need your skills.</p>
+        <p class="text-sm text-muted">Comment, raise your hand, and connect with developers who need your
+          skills.</p>
       </div>
       <div class="card feature-card">
         <div class="feature-icon"><i class="fa-solid fa-medal"></i></div>
@@ -74,10 +142,20 @@
     </div>
   </footer>
 
-  <script src="/public/config/app-config.js"></script>
-  <script src="/public/js/supabaseClient.js"></script>
-  <script src="/public/js/shared.js"></script>
-  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+  <script>
+
+    function toggleMobileMenu() {
+      var menu = document.getElementById("mobile-menu");
+      if (menu) {
+        menu.classList.toggle("open");
+      }
+    }
+
+    const yearEl = document.getElementById("year");
+    if (yearEl) {
+      yearEl.textContent = new Date().getFullYear();
+    }
+  </script>
 </body>
 
 </html>
